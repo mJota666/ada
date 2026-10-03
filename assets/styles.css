@@ -124,8 +124,10 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 .search-box input { border-radius: 7px; background: var(--wash); }
 .chapter-list { border-left: 1px solid var(--line); }
 .chapter-list a { grid-template-columns: 2.15rem minmax(0, 1fr) auto; margin: .1rem 0; padding: .62rem .65rem; border-radius: 0 8px 8px 0; }
-.chapter-progress { align-self: center; color: var(--muted); font-size: .68rem; font-variant-numeric: tabular-nums; }
-.chapter-list a.active .chapter-progress { color: var(--cyan); font-weight: 800; }
+.chapter-progress { --chapter-progress: 0deg; align-self: center; display: grid; place-items: center; width: 29px; height: 29px; flex: 0 0 29px; border-radius: 50%; background: conic-gradient(var(--cyan) var(--chapter-progress), var(--line) 0); color: var(--navy); font-size: .58rem; font-variant-numeric: tabular-nums; font-weight: 800; position: relative; }
+.chapter-progress::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--paper); }
+.chapter-progress span { position: relative; z-index: 1; }
+.chapter-list a.active .chapter-progress { color: var(--cyan); }
 .chapter-list a.active { box-shadow: inset 3px 0 0 var(--cyan); background: linear-gradient(90deg, var(--recommendation), transparent); }
 .sidebar-note { border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line)); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; background: color-mix(in srgb, #fff9e8 60%, var(--paper)); }
 .main { padding: 0 1rem 5rem; }

@@ -102,10 +102,10 @@ function renderMarkdown(markdown) {
   flushParagraph(); closeList(); return html;
 }
 function chapterPercent(n) { try { const state = JSON.parse(localStorage.getItem(`ada-reading-chapter-${n}`) || '{"max":0,"complete":false}'); return state.complete ? 100 : Math.max(0, Math.min(100, state.max || 0)); } catch { return 0; } }
-function updateChapterBadge() { const badge = document.getElementById(`chapterProgress-${currentChapter}`); if (badge) badge.textContent = `${chapterPercent(currentChapter)}%`; }
+function updateChapterBadge() { const badge = document.getElementById(`chapterProgress-${currentChapter}`); if (badge) { const value = chapterPercent(currentChapter); badge.style.setProperty("--chapter-progress", `${value * 3.6}deg`); badge.querySelector("span").textContent = value; } }
 function renderNavigation(active) {
   list.innerHTML = chapters.map(([n,title,available]) => available
-    ? `<li><a href="#/chapter/${n}" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span><span class="chapter-progress" id="chapterProgress-${n}">${chapterPercent(n)}%</span></a></li>`
+    ? `<li><a href="#/chapter/${n}" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span><span class="chapter-progress" id="chapterProgress-${n}" style="--chapter-progress:${chapterPercent(n)*3.6}deg"><span>${chapterPercent(n)}</span></span></a></li>`
     : `<li><span class="unavailable" title="Chưa có bản dịch"><span class="number">${String(n).padStart(2,"0")}</span> ${title}</span></li>`).join("");
 }
 function renderOnPage() {
