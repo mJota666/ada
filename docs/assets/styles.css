@@ -30,7 +30,7 @@ html[data-theme="dark"] {
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: Inter, "Segoe UI", Arial, sans-serif; line-height: 1.65; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, "Segoe UI", sans-serif; line-height: 1.65; }
 a { color: var(--blue); }
 .skip-link { position: fixed; left: 1rem; top: -4rem; z-index: 100; background: var(--paper); padding: .7rem 1rem; border: 2px solid var(--blue); }
 .skip-link:focus { top: 1rem; }
@@ -65,13 +65,13 @@ a { color: var(--blue); }
 
 .main { min-width: 0; padding: 0 1rem 4rem; }
 .reading-progress { position: fixed; top: 67px; left: 0; z-index: 40; width: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--cyan)); }
-.document { padding-top: 3.5rem; font-family: Georgia, "Times New Roman", serif; font-size: 1.04rem; }
+.document { padding-top: 3.5rem; font-family: Arial, "Segoe UI", sans-serif; font-size: 1.04rem; }
 .document > :first-child { margin-top: 0; }
 .document h1, .document h2, .document h3 { font-family: Inter, "Segoe UI", Arial, sans-serif; line-height: 1.2; color: var(--navy); scroll-margin-top: 88px; }
 .document h1 { margin: 0 0 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.035em; }
 .document h2 { margin: 3.2rem 0 1rem; font-size: 1.65rem; }
 .document h3 { margin: 2rem 0 .8rem; color: var(--blue); font-size: 1.2rem; }
-.document p { margin: .8rem 0; text-align: justify; hyphens: auto; }
+.document p { margin: .8rem 0; text-align: left; hyphens: none; letter-spacing: normal; word-spacing: normal; }
 .document strong { color: var(--navy); }
 .document blockquote { margin: 1.4rem 0; padding: .5rem 1.2rem; border-left: 4px solid var(--cyan); background: var(--recommendation); }
 .document ul, .document ol { padding-left: 1.45rem; }
