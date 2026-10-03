@@ -26,6 +26,7 @@ const menu = document.getElementById("menuButton");
 const sidebar = document.getElementById("sidebar");
 const backdrop = document.getElementById("backdrop");
 let currentMarkdown = "";
+const chapterTextCache = {};
 let currentChapter = 0;
 let highlightToolbar;
 function highlightKey() { return `ada-highlights-chapter-${currentChapter}`; }
@@ -120,7 +121,7 @@ function setPager(n) {
 async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
   currentChapter = n;
-  renderNavigation(n); search.value = ""; searchStatus.textContent = ""; closeMenu();
+  renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
     doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường<br><span>Phiên bản tiếng Việt chuyên ngành</span></h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p><div class="landing-grid"><div class="landing-card"><strong>${count}<small>/17 chương</small></strong><span>Nội dung đã công bố</span></div><div class="landing-card"><strong>17</strong><span>Chủ đề thực hành lâm sàng</span></div><div class="landing-card"><strong>Cá nhân</strong><span>Tô sáng lưu trên thiết bị của bạn</span></div></div><div class="landing-actions"><a class="primary-action" href="#/chapter/1">Bắt đầu đọc Chương 1 <span>→</span></a><a class="secondary-action" href="#/chapter/3">Xem dự phòng đái tháo đường</a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
@@ -149,10 +150,15 @@ function highlightSearch() {
   });
   searchStatus.textContent = `${count} kết quả`; renderOnPage(); doc.querySelector("mark")?.scrollIntoView({behavior:"smooth",block:"center"});
 }
+async function searchAllChapters(query) {
+  const results = []; const available = chapters.filter(c => c[2]);
+  await Promise.all(available.map(async ([n, title]) => { try { chapterTextCache[n] ||= await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`).then(r => r.text()); } catch { return; } const lines = chapterTextCache[n].split(/\r?\n/); lines.forEach((line, i) => { if (line.toLowerCase().includes(query.toLowerCase()) && results.length < 60) results.push({n, title, line: line.replace(/[#*|`]/g, "").trim().slice(0, 180), i}); }); }));
+  results.sort((a,b) => a.n-b.n || a.i-b.i); let box = document.getElementById("globalResults"); if (!box) { box = document.createElement("div"); box.id = "globalResults"; box.className = "global-results"; searchStatus.after(box); } box.innerHTML = results.length ? results.map(r => `<a href="#/chapter/${r.n}"><strong>Chương ${r.n}</strong><span>${escapeHtml(r.line)}</span></a>`).join("") : `<p>Không tìm thấy trong các chương đã công bố.</p>`; searchStatus.textContent = `${results.length}${results.length === 60 ? "+" : ""} kết quả trên toàn bộ chương`;
+}
 function closeMenu(){ sidebar.classList.remove("open"); backdrop.classList.remove("open"); menu.setAttribute("aria-expanded","false"); }
 menu.addEventListener("click",()=>{ const open=sidebar.classList.toggle("open"); backdrop.classList.toggle("open",open); menu.setAttribute("aria-expanded",String(open)); });
 backdrop.addEventListener("click",closeMenu);
-search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=setTimeout(highlightSearch,250); });
+search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=setTimeout(()=>{ const q=search.value.trim(); if (q) { highlightSearch(); searchAllChapters(q); } else { const box=document.getElementById("globalResults"); if (box) box.remove(); highlightSearch(); } },250); });
 document.getElementById("themeButton").addEventListener("click",()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; localStorage.setItem("theme",next); });
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; updateReadingProgress(); },{passive:true});

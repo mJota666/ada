@@ -54,6 +54,7 @@ a { color: var(--blue); }
 .search-box input { width: 100%; border: 1px solid var(--line); border-radius: 9px; background: var(--paper); color: var(--ink); padding: .68rem .75rem; font: inherit; font-size: .88rem; }
 .search-box input:focus { outline: 3px solid color-mix(in srgb, var(--blue) 25%, transparent); border-color: var(--blue); }
 .search-status { min-height: 1.2em; margin: .35rem 0 0; color: var(--muted); font-size: .75rem; }
+.global-results { max-height: 48vh; margin-top: .65rem; overflow: auto; border-top: 1px solid var(--line); }.global-results a { display: block; padding: .55rem .25rem; border-bottom: 1px solid var(--line); color: var(--ink); text-decoration: none; font-size: .74rem; line-height: 1.35; }.global-results a:hover { background: var(--wash); }.global-results strong, .global-results span { display: block; }.global-results strong { color: var(--cyan); font-size: .7rem; }.global-results p { margin: .6rem 0; color: var(--muted); font-size: .75rem; }
 .chapter-list { list-style: none; margin: 0; padding: 0; }
 .chapter-list a { display: grid; grid-template-columns: 2rem 1fr; gap: .35rem; padding: .48rem .6rem; border-radius: 8px; color: var(--muted); font-size: .84rem; line-height: 1.3; text-decoration: none; }
 .chapter-list a:hover { background: var(--wash); color: var(--blue); }
