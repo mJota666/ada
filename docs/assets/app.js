@@ -1,7 +1,7 @@
 const chapters = [
   [1, "Cải thiện chăm sóc và thúc đẩy sức khỏe quần thể", true],
   [2, "Chẩn đoán và phân loại đái tháo đường", true],
-  [3, "Dự phòng hoặc trì hoãn đái tháo đường và bệnh đồng mắc", false],
+  [3, "Dự phòng hoặc trì hoãn đái tháo đường và bệnh đồng mắc", true],
   [4, "Đánh giá y khoa toàn diện và bệnh đồng mắc", true],
   [5, "Hành vi sức khỏe tích cực và sức khỏe tinh thần", true],
   [6, "Mục tiêu đường huyết, hạ đường huyết và cơn tăng đường huyết", true],
