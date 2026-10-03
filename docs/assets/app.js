@@ -35,7 +35,7 @@ function restoreHighlights() { const saved = currentChapter ? localStorage.getIt
 function readingStateKey() { return `ada-reading-chapter-${currentChapter}`; }
 function readingState() { try { return JSON.parse(localStorage.getItem(readingStateKey()) || '{"max":0,"complete":false}'); } catch { return {max:0, complete:false}; } }
 function saveReadingState(state) { localStorage.setItem(readingStateKey(), JSON.stringify(state)); }
-function chapterTools() { return `<div class="chapter-tools"><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
+function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`;
 function updateReadingProgress() { if (!currentChapter) return; const state = readingState(); const value = state.complete ? 100 : (state.max || 0); const ring = document.getElementById("chapterRing"); if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đánh dấu ${value}%`; } const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete; updateChapterBadge(); }
 function bindChapterTools() { const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"); if (!checkbox || !marker) return; const state = readingState(); checkbox.checked = !!state.complete; checkbox.addEventListener("change", () => { const next = readingState(); next.complete = checkbox.checked; if (next.complete) next.max = 100; saveReadingState(next); updateReadingProgress(); }); marker.addEventListener("click", () => { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const next = readingState(); next.max = Math.max(next.max || 0, Math.round(scrollY / maxScroll * 100)); saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã lưu vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); }); updateReadingProgress(); }
 function hideHighlightToolbar() { if (highlightToolbar) highlightToolbar.hidden = true; }
@@ -121,6 +121,7 @@ function setPager(n) {
 async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
   currentChapter = n;
+  if (n) localStorage.setItem("ada-last-chapter", String(n));
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;

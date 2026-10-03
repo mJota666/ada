@@ -41,7 +41,7 @@ function restoreHighlights() {
 function readingStateKey() { return `ada-reading-chapter-${currentChapter}`; }
 function readingState() { try { return JSON.parse(localStorage.getItem(readingStateKey()) || '{"max":0,"complete":false}'); } catch { return {max:0, complete:false}; } }
 function saveReadingState(state) { localStorage.setItem(readingStateKey(), JSON.stringify(state)); }
-function chapterTools() { return `<div class="chapter-tools"><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
+function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`;
 function updateReadingProgress() {
   if (!currentChapter) return;
   const state = readingState(); const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const current = Math.min(100, Math.round(scrollY / maxScroll * 100));
@@ -153,6 +153,7 @@ function setPager(n) {
 async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
   currentChapter = n;
+  if (n) localStorage.setItem("ada-last-chapter", String(n));
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
