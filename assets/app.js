@@ -29,6 +29,7 @@ let currentMarkdown = "";
 const chapterTextCache = {};
 let currentChapter = 0;
 let highlightToolbar;
+let readingSaveTimer;
 
 function highlightKey() { return `ada-highlights-chapter-${currentChapter}`; }
 function saveHighlights() {
@@ -41,19 +42,21 @@ function restoreHighlights() {
 function readingStateKey() { return `ada-reading-chapter-${currentChapter}`; }
 function readingState() { try { return JSON.parse(localStorage.getItem(readingStateKey()) || '{"max":0,"complete":false}'); } catch { return {max:0, complete:false}; } }
 function saveReadingState(state) { localStorage.setItem(readingStateKey(), JSON.stringify(state)); }
+function currentScrollPercent() { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); return Math.min(100, Math.max(0, Math.round(scrollY / maxScroll * 100))); }
 function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
 function updateReadingProgress() {
   if (!currentChapter) return;
-  const state = readingState(); const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const current = Math.min(100, Math.round(scrollY / maxScroll * 100));
+  const state = readingState();
   const value = state.complete ? 100 : (state.max || 0); const ring = document.getElementById("chapterRing");
   if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đọc ${value}%`; } updateChapterBadge();
   const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete;
 }
 function bindChapterTools() {
-  const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"); if (!checkbox || !marker) return;
+  const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"), home = document.querySelector(".chapter-tools .home-link"); if (!checkbox || !marker) return;
   const state = readingState(); checkbox.checked = !!state.complete;
   checkbox.addEventListener("change", () => { const next = readingState(); next.complete = checkbox.checked; if (next.complete) next.max = 100; saveReadingState(next); updateReadingProgress(); });
-  marker.addEventListener("click", () => { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const next = readingState(); next.max = Math.max(next.max || 0, Math.round(scrollY / maxScroll * 100)); saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã lưu vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); });
+  home?.addEventListener("click", event => { event.preventDefault(); location.hash = "#/"; });
+  marker.addEventListener("click", () => { const next = readingState(); next.max = currentScrollPercent(); next.complete = false; saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã đặt lại vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); });
   updateReadingProgress();
 }
 function hideHighlightToolbar() { if (highlightToolbar) highlightToolbar.hidden = true; }
@@ -201,7 +204,7 @@ backdrop.addEventListener("click",closeMenu);
 search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=setTimeout(()=>{ const q=search.value.trim(); if (q) { highlightSearch(); searchAllChapters(q); } else { const box=document.getElementById("globalResults"); if (box) box.remove(); highlightSearch(); } },250); });
 document.getElementById("themeButton").addEventListener("click",()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; localStorage.setItem("theme",next); });
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; updateReadingProgress(); },{passive:true});
+window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; clearTimeout(readingSaveTimer); readingSaveTimer = setTimeout(() => { if (!currentChapter) return; const state = readingState(); if (state.complete) return; state.max = currentScrollPercent(); saveReadingState(state); updateReadingProgress(); }, 180); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
 
 

@@ -29,28 +29,63 @@ let currentMarkdown = "";
 const chapterTextCache = {};
 let currentChapter = 0;
 let highlightToolbar;
+let readingSaveTimer;
+
 function highlightKey() { return `ada-highlights-chapter-${currentChapter}`; }
-function saveHighlights() { if (currentChapter) localStorage.setItem(highlightKey(), doc.innerHTML); }
-function restoreHighlights() { const saved = currentChapter ? localStorage.getItem(highlightKey()) : null; if (saved) { doc.innerHTML = saved; if (!document.getElementById("completeChapter")) doc.insertAdjacentHTML("afterbegin", chapterTools()); } }
+function saveHighlights() {
+  if (currentChapter) localStorage.setItem(highlightKey(), doc.innerHTML);
+}
+function restoreHighlights() {
+  const saved = currentChapter ? localStorage.getItem(highlightKey()) : null;
+  if (saved) { doc.innerHTML = saved; if (!document.getElementById("completeChapter")) doc.insertAdjacentHTML("afterbegin", chapterTools()); }
+}
 function readingStateKey() { return `ada-reading-chapter-${currentChapter}`; }
 function readingState() { try { return JSON.parse(localStorage.getItem(readingStateKey()) || '{"max":0,"complete":false}'); } catch { return {max:0, complete:false}; } }
 function saveReadingState(state) { localStorage.setItem(readingStateKey(), JSON.stringify(state)); }
+function currentScrollPercent() { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); return Math.min(100, Math.max(0, Math.round(scrollY / maxScroll * 100))); }
 function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
-function updateReadingProgress() { if (!currentChapter) return; const state = readingState(); const value = state.complete ? 100 : (state.max || 0); const ring = document.getElementById("chapterRing"); if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đánh dấu ${value}%`; } const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete; updateChapterBadge(); }
-function bindChapterTools() { const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"); if (!checkbox || !marker) return; const state = readingState(); checkbox.checked = !!state.complete; checkbox.addEventListener("change", () => { const next = readingState(); next.complete = checkbox.checked; if (next.complete) next.max = 100; saveReadingState(next); updateReadingProgress(); }); marker.addEventListener("click", () => { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const next = readingState(); next.max = Math.max(next.max || 0, Math.round(scrollY / maxScroll * 100)); saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã lưu vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); }); updateReadingProgress(); }
+function updateReadingProgress() {
+  if (!currentChapter) return;
+  const state = readingState();
+  const value = state.complete ? 100 : (state.max || 0); const ring = document.getElementById("chapterRing");
+  if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đọc ${value}%`; } updateChapterBadge();
+  const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete;
+}
+function bindChapterTools() {
+  const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"), home = document.querySelector(".chapter-tools .home-link"); if (!checkbox || !marker) return;
+  const state = readingState(); checkbox.checked = !!state.complete;
+  checkbox.addEventListener("change", () => { const next = readingState(); next.complete = checkbox.checked; if (next.complete) next.max = 100; saveReadingState(next); updateReadingProgress(); });
+  home?.addEventListener("click", event => { event.preventDefault(); location.hash = "#/"; });
+  marker.addEventListener("click", () => { const next = readingState(); next.max = currentScrollPercent(); next.complete = false; saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã đặt lại vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); });
+  updateReadingProgress();
+}
 function hideHighlightToolbar() { if (highlightToolbar) highlightToolbar.hidden = true; }
 function showHighlightToolbar() {
   const selection = window.getSelection();
   if (!selection || selection.isCollapsed || !selection.toString().trim() || !doc.contains(selection.anchorNode)) { hideHighlightToolbar(); return; }
   if (!highlightToolbar) {
-    highlightToolbar = document.createElement("button"); highlightToolbar.className = "highlight-toolbar"; highlightToolbar.type = "button"; highlightToolbar.textContent = "Tô sáng";
+    highlightToolbar = document.createElement("button");
+    highlightToolbar.className = "highlight-toolbar";
+    highlightToolbar.type = "button";
+    highlightToolbar.textContent = "Tô sáng";
     highlightToolbar.addEventListener("mousedown", event => event.preventDefault());
-    highlightToolbar.addEventListener("click", () => { const range = window.getSelection()?.getRangeAt(0); if (!range || range.collapsed || !doc.contains(range.commonAncestorContainer)) return; const mark = document.createElement("mark"); mark.className = "user-highlight"; try { range.surroundContents(mark); } catch { mark.appendChild(range.extractContents()); range.insertNode(mark); } saveHighlights(); window.getSelection().removeAllRanges(); hideHighlightToolbar(); });
+    highlightToolbar.addEventListener("click", () => {
+      const range = window.getSelection()?.getRangeAt(0);
+      if (!range || range.collapsed || !doc.contains(range.commonAncestorContainer)) return;
+      const mark = document.createElement("mark");
+      mark.className = "user-highlight";
+      try { range.surroundContents(mark); } catch { mark.appendChild(range.extractContents()); range.insertNode(mark); }
+      saveHighlights(); window.getSelection().removeAllRanges(); hideHighlightToolbar();
+    });
     document.body.appendChild(highlightToolbar);
   }
-  const rect = selection.getRangeAt(0).getBoundingClientRect(); highlightToolbar.style.left = `${Math.max(8, rect.left + scrollX)}px`; highlightToolbar.style.top = `${Math.max(8, rect.top + scrollY - 42)}px`; highlightToolbar.hidden = false;
+  const rect = selection.getRangeAt(0).getBoundingClientRect();
+  highlightToolbar.style.left = `${Math.max(8, rect.left + scrollX)}px`;
+  highlightToolbar.style.top = `${Math.max(8, rect.top + scrollY - 42)}px`;
+  highlightToolbar.hidden = false;
 }
-document.addEventListener("mouseup", () => setTimeout(showHighlightToolbar, 0)); document.addEventListener("mousedown", event => { if (!event.target.closest?.(".highlight-toolbar")) hideHighlightToolbar(); });
+document.addEventListener("mouseup", () => setTimeout(showHighlightToolbar, 0));
+document.addEventListener("mousedown", event => { if (!event.target.closest?.(".highlight-toolbar")) hideHighlightToolbar(); });
 
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -152,9 +187,16 @@ function highlightSearch(shouldScroll = false) {
   searchStatus.textContent = `${count} kết quả`; renderOnPage(); if (shouldScroll) doc.querySelector("mark")?.scrollIntoView({behavior:"smooth",block:"center"});
 }
 async function searchAllChapters(query) {
-  const results = []; const available = chapters.filter(c => c[2]);
-  await Promise.all(available.map(async ([n, title]) => { try { chapterTextCache[n] ||= await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`).then(r => r.text()); } catch { return; } const lines = chapterTextCache[n].split(/\r?\n/); lines.forEach((line, i) => { if (line.toLowerCase().includes(query.toLowerCase()) && results.length < 60) results.push({n, title, line: line.replace(/[#*|`]/g, "").trim().slice(0, 180), i}); }); }));
-  results.sort((a,b) => a.n-b.n || a.i-b.i); let box = document.getElementById("globalResults"); if (!box) { box = document.createElement("div"); box.id = "globalResults"; box.className = "global-results"; searchStatus.after(box); } box.innerHTML = results.length ? results.map(r => `<a href="#/chapter/${r.n}?search=${encodeURIComponent(query)}"><strong>Chương ${r.n}</strong><span>${escapeHtml(r.line)}</span></a>`).join("") : `<p>Không tìm thấy trong các chương đã công bố.</p>`; searchStatus.textContent = `${results.length}${results.length === 60 ? "+" : ""} kết quả trên toàn bộ chương`;
+  const results = [];
+  const available = chapters.filter(c => c[2]);
+  await Promise.all(available.map(async ([n, title]) => {
+    try { chapterTextCache[n] ||= await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`).then(r => r.text()); } catch { return; }
+    const lines = chapterTextCache[n].split(/\r?\n/); lines.forEach((line, i) => { if (line.toLowerCase().includes(query.toLowerCase()) && results.length < 60) results.push({n, title, line: line.replace(/[#*|`]/g, "").trim().slice(0, 180), i}); });
+  }));
+  results.sort((a,b) => a.n-b.n || a.i-b.i);
+  let box = document.getElementById("globalResults"); if (!box) { box = document.createElement("div"); box.id = "globalResults"; box.className = "global-results"; searchStatus.after(box); }
+  box.innerHTML = results.length ? results.map(r => `<a href="#/chapter/${r.n}?search=${encodeURIComponent(query)}"><strong>Chương ${r.n}</strong><span>${escapeHtml(r.line)}</span></a>`).join("") : `<p>Không tìm thấy trong các chương đã công bố.</p>`;
+  searchStatus.textContent = `${results.length}${results.length === 60 ? "+" : ""} kết quả trên toàn bộ chương`;
 }
 function closeMenu(){ sidebar.classList.remove("open"); backdrop.classList.remove("open"); menu.setAttribute("aria-expanded","false"); }
 menu.addEventListener("click",()=>{ const open=sidebar.classList.toggle("open"); backdrop.classList.toggle("open",open); menu.setAttribute("aria-expanded",String(open)); });
@@ -162,7 +204,7 @@ backdrop.addEventListener("click",closeMenu);
 search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=setTimeout(()=>{ const q=search.value.trim(); if (q) { highlightSearch(); searchAllChapters(q); } else { const box=document.getElementById("globalResults"); if (box) box.remove(); highlightSearch(); } },250); });
 document.getElementById("themeButton").addEventListener("click",()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; localStorage.setItem("theme",next); });
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; updateReadingProgress(); },{passive:true});
+window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; clearTimeout(readingSaveTimer); readingSaveTimer = setTimeout(() => { if (!currentChapter) return; const state = readingState(); if (state.complete) return; state.max = currentScrollPercent(); saveReadingState(state); updateReadingProgress(); }, 180); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
 
 
