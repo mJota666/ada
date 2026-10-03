@@ -51,7 +51,9 @@ function renderMarkdown(markdown) {
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     if (heading) {
       flushParagraph(); closeList();
-      const level = heading[1].length, text = heading[2], id = slugify(text) || `muc-${i}`;
+      const level = heading[1].length, rawText = heading[2];
+      const text = level === 1 ? rawText.replace(/^(\d+)\./, "Chương $1.") : rawText;
+      const id = slugify(text) || `muc-${i}`;
       html += `<h${level} id="${id}">${inline(text)}</h${level}>`; continue;
     }
     if (line.startsWith("|")) {
