@@ -236,6 +236,8 @@ body.focus-mode .topbar, body.focus-mode .sidebar, body.focus-mode .on-page, bod
 body.focus-mode .app-shell { display: block; max-width: none; }
 body.focus-mode .main { max-width: 1120px; margin: 0 auto; padding: 1.5rem clamp(1rem, 4vw, 4rem) 3rem; }
 body.focus-mode .document { margin-top: 0; }
+body.focus-mode .main { padding-top: .75rem; transition: padding-top .35s ease; }
+body.focus-mode .chapter-tools { top: 20px; transition: top .35s ease, box-shadow .35s ease, background-color .35s ease; }
 .is-landing .pager { display: none; }
 @media (max-width: 700px) { body.is-landing { height: auto; overflow: auto; } .is-landing .app-shell { display: block; height: auto; overflow: visible; }.is-landing .sidebar { height: auto; max-height: 35vh; }.is-landing .main { overflow: visible; }.is-landing .document { height: auto; min-height: calc(100vh - 112px); overflow: visible; } }
 
