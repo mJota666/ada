@@ -26,6 +26,44 @@ const menu = document.getElementById("menuButton");
 const sidebar = document.getElementById("sidebar");
 const backdrop = document.getElementById("backdrop");
 let currentMarkdown = "";
+let currentChapter = 0;
+let highlightToolbar;
+
+function highlightKey() { return `ada-highlights-chapter-${currentChapter}`; }
+function saveHighlights() {
+  if (currentChapter) localStorage.setItem(highlightKey(), doc.innerHTML);
+}
+function restoreHighlights() {
+  const saved = currentChapter ? localStorage.getItem(highlightKey()) : null;
+  if (saved) doc.innerHTML = saved;
+}
+function hideHighlightToolbar() { if (highlightToolbar) highlightToolbar.hidden = true; }
+function showHighlightToolbar() {
+  const selection = window.getSelection();
+  if (!selection || selection.isCollapsed || !selection.toString().trim() || !doc.contains(selection.anchorNode)) { hideHighlightToolbar(); return; }
+  if (!highlightToolbar) {
+    highlightToolbar = document.createElement("button");
+    highlightToolbar.className = "highlight-toolbar";
+    highlightToolbar.type = "button";
+    highlightToolbar.textContent = "Tô sáng";
+    highlightToolbar.addEventListener("mousedown", event => event.preventDefault());
+    highlightToolbar.addEventListener("click", () => {
+      const range = window.getSelection()?.getRangeAt(0);
+      if (!range || range.collapsed || !doc.contains(range.commonAncestorContainer)) return;
+      const mark = document.createElement("mark");
+      mark.className = "user-highlight";
+      try { range.surroundContents(mark); } catch { mark.appendChild(range.extractContents()); range.insertNode(mark); }
+      saveHighlights(); window.getSelection().removeAllRanges(); hideHighlightToolbar();
+    });
+    document.body.appendChild(highlightToolbar);
+  }
+  const rect = selection.getRangeAt(0).getBoundingClientRect();
+  highlightToolbar.style.left = `${Math.max(8, rect.left + scrollX)}px`;
+  highlightToolbar.style.top = `${Math.max(8, rect.top + scrollY - 42)}px`;
+  highlightToolbar.hidden = false;
+}
+document.addEventListener("mouseup", () => setTimeout(showHighlightToolbar, 0));
+document.addEventListener("mousedown", event => { if (!event.target.closest?.(".highlight-toolbar")) hideHighlightToolbar(); });
 
 function escapeHtml(value) {
   return value.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -93,6 +131,7 @@ function setPager(n) {
 }
 async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
+  currentChapter = n;
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
@@ -105,7 +144,7 @@ async function loadRoute() {
   try {
     const response = await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    currentMarkdown = await response.text(); doc.innerHTML = renderMarkdown(currentMarkdown); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0);
+    currentMarkdown = await response.text(); doc.innerHTML = renderMarkdown(currentMarkdown); restoreHighlights(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0);
   } catch (error) { doc.innerHTML = `<div class="error"><strong>Không tải được Chương ${n}.</strong><p>${escapeHtml(error.message)}</p></div>`; }
 }
 function highlightSearch() {

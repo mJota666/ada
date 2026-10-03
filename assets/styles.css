@@ -82,6 +82,9 @@ a { color: var(--blue); }
 .document th, .document td { padding: .7rem .75rem; border: 1px solid var(--line); vertical-align: top; }
 .document tr:nth-child(even) td { background: var(--wash); }
 .document mark { background: #ffe58f; color: #171717; padding: 0 .08em; border-radius: 2px; }
+.highlight-toolbar { position: absolute; z-index: 100; border: 1px solid var(--line); border-radius: 7px; padding: .42rem .65rem; background: var(--navy); color: #fff; box-shadow: var(--shadow); cursor: pointer; font: 700 .8rem Inter, sans-serif; }
+.highlight-toolbar[hidden] { display: none; }
+.document mark.user-highlight { background: #ffe58f; color: inherit; }
 .loading, .error, .landing { padding: 3rem; border: 1px solid var(--line); border-radius: 16px; background: var(--wash); font-family: Inter, "Segoe UI", Arial, sans-serif; }
 .landing h1 { border: 0; padding: 0; }
 .landing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
