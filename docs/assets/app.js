@@ -43,7 +43,7 @@ function readingStateKey() { return `ada-reading-chapter-${currentChapter}`; }
 function readingState() { try { return JSON.parse(localStorage.getItem(readingStateKey()) || '{"max":0,"complete":false}'); } catch { return {max:0, complete:false}; } }
 function saveReadingState(state) { localStorage.setItem(readingStateKey(), JSON.stringify(state)); }
 function currentScrollPercent() { const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); return Math.min(100, Math.max(0, Math.round(scrollY / maxScroll * 100))); }
-function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
+function chapterTools() { return `<div class="chapter-tools"><a class="home-link" href="#/" aria-label="Về trang chủ">⌂ <span>Trang chủ</span></a><label><input id="completeChapter" type="checkbox"> <span>Đã hoàn thành chương này</span></label><button id="markReadHere" type="button">Đánh dấu đọc đến đây</button><button id="focusMode" type="button" class="focus-toggle" aria-pressed="false">Chế độ tập trung</button><div class="progress-ring" id="chapterRing" aria-label="Tiến độ đọc"><span>0%</span></div></div>`; }
 function updateReadingProgress() {
   if (!currentChapter) return;
   const state = readingState();
@@ -52,10 +52,12 @@ function updateReadingProgress() {
   const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete;
 }
 function bindChapterTools() {
-  const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"), home = document.querySelector(".chapter-tools .home-link"); if (!checkbox || !marker) return;
+  const checkbox = document.getElementById("completeChapter"), marker = document.getElementById("markReadHere"), home = document.querySelector(".chapter-tools .home-link"), focus = document.getElementById("focusMode"); if (!checkbox || !marker) return;
   const state = readingState(); checkbox.checked = !!state.complete;
   checkbox.addEventListener("change", () => { const next = readingState(); next.complete = checkbox.checked; if (next.complete) next.max = 100; saveReadingState(next); updateReadingProgress(); });
   home?.addEventListener("click", event => { event.preventDefault(); location.hash = "#/"; });
+  const syncFocus = () => { const active = document.body.classList.toggle("focus-mode", localStorage.getItem("ada-focus-mode") === "1"); if (focus) { focus.setAttribute("aria-pressed", String(active)); focus.textContent = active ? "Thoát chế độ tập trung" : "Chế độ tập trung"; } };
+  syncFocus(); focus?.addEventListener("click", () => { localStorage.setItem("ada-focus-mode", document.body.classList.contains("focus-mode") ? "0" : "1"); syncFocus(); });
   marker.addEventListener("click", () => { const next = readingState(); next.max = currentScrollPercent(); next.complete = false; saveReadingState(next); updateReadingProgress(); marker.textContent = "Đã đặt lại vị trí đọc"; setTimeout(() => marker.textContent = "Đánh dấu đọc đến đây", 1600); });
   updateReadingProgress();
 }
@@ -157,6 +159,7 @@ async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
   currentChapter = n;
   document.body.classList.toggle("is-landing", !n);
+  if (!n) document.body.classList.remove("focus-mode");
   if (n) localStorage.setItem("ada-last-chapter", String(n));
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
