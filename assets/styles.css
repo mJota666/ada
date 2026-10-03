@@ -217,3 +217,12 @@ html[data-theme="dark"] .chapter-tools { background: rgba(20,35,45,.72); border-
   letter-spacing: normal;
   word-spacing: normal;
 }
+
+/* The landing page is a cover, not a constrained reading column. */
+.is-landing .app-shell { display: block; max-width: none; }
+.is-landing .sidebar, .is-landing .on-page { display: none; }
+.is-landing .main { max-width: 1440px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 4rem) 4rem; }
+.is-landing .document { min-height: calc(100vh - 112px); margin-top: 2rem; }
+.is-landing .landing { max-width: 1120px; margin: 0 auto; padding: clamp(2rem, 7vw, 7rem) clamp(1rem, 5vw, 5rem); }
+.is-landing .landing h1 { max-width: 980px; font-size: clamp(3rem, 6vw, 5.5rem); }
+.is-landing .landing-lead { max-width: 78ch; font-size: 1.2rem; }

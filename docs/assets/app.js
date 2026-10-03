@@ -156,6 +156,7 @@ function setPager(n) {
 async function loadRoute() {
   const match = location.hash.match(/^#\/chapter\/(\d+)/); const n = match ? Number(match[1]) : 0;
   currentChapter = n;
+  document.body.classList.toggle("is-landing", !n);
   if (n) localStorage.setItem("ada-last-chapter", String(n));
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
