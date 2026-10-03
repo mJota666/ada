@@ -144,11 +144,10 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
   .document table { min-width: 0; font-size: 7.5pt; }
 }
 
-/* A single, Vietnamese-safe editorial face for all primary headings. */
-.landing h1, .document h1, .document h2, .standalone-document h1, .brand strong {
-  font-family: Georgia, "Times New Roman", serif;
+/* Keep core reading headings on the font family with the most reliable Vietnamese rendering. */
+.landing h1, .document h1, .document h2 {
+  font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif;
   font-kerning: normal;
-  font-variant-ligatures: normal;
   letter-spacing: normal;
   word-spacing: normal;
 }
