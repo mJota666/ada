@@ -135,7 +135,7 @@ async function loadRoute() {
 }
 function highlightSearch() {
   const query = search.value.trim();
-  doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown);
+  doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); bindChapterTools();
   if (!query) { searchStatus.textContent = ""; renderOnPage(); return; }
   const walker = document.createTreeWalker(doc, NodeFilter.SHOW_TEXT); const nodes = []; let node, count = 0;
   while ((node = walker.nextNode())) if (!['SCRIPT','STYLE'].includes(node.parentElement.tagName)) nodes.push(node);
