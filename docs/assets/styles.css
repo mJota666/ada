@@ -105,7 +105,8 @@ a { color: var(--blue); }
 html[data-theme="dark"] .document mark { background: #d8b84f; color: #15212b; }
 html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
 .landing, .landing h1, .document { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; }
-.landing h1, .document h1, .document h2 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: -.025em; }
+.landing h1 { font-family: Georgia, "Times New Roman", serif; font-kerning: normal; letter-spacing: normal; }
+.document h1, .document h2 { font-family: Georgia, "Times New Roman", serif; font-kerning: normal; letter-spacing: normal; }
 body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 .topbar { height: 76px; padding: 0 clamp(1rem, 3vw, 3rem); background: color-mix(in srgb, var(--paper) 88%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--line) 75%, transparent); }
 .brand { gap: 1rem; }.brand-mark { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(145deg, #103b5c, #1769aa); box-shadow: 0 7px 18px rgba(23,105,170,.22); }.brand strong { font-family: Georgia, "Times New Roman", serif; font-size: 1.03rem; letter-spacing: -.01em; }.brand small { margin-top: .1rem; letter-spacing: .025em; }
