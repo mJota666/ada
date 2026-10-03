@@ -129,6 +129,6 @@ search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=s
 document.getElementById("themeButton").addEventListener("click",()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; localStorage.setItem("theme",next); });
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; },{passive:true});
-window.addEventListener("hashchange",loadRoute); loadRoute();
+window.addEventListener("hashchange",()=>{ if (location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
 
 
