@@ -99,6 +99,7 @@ a { color: var(--blue); }
 .backdrop { display: none; }
 
 /* Clinical knowledge-base visual system */
+.document p { text-align: justify; text-justify: inter-word; }
 html[data-theme="dark"] .document mark { background: #d8b84f; color: #15212b; }
 html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
 .landing, .landing h1, .document { font-family: "Noto Sans", "Segoe UI", Arial, sans-serif; }
@@ -123,7 +124,7 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
   .brand strong { font-size: .85rem; }
   .brand small { display: none; }
   .document { padding-top: 2rem; font-size: 1rem; }
-  .document p { text-align: left; }
+  .document p { text-align: justify; text-justify: inter-word; }
   .landing-grid { grid-template-columns: 1fr; }
 }
 @media print {
