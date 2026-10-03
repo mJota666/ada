@@ -81,7 +81,7 @@ function inline(value) {
 function renderMarkdown(markdown) {
   const lines = markdown.replace(/\r/g, "").split("\n");
   let html = "", paragraph = [], listType = null;
-  const flushParagraph = () => { if (paragraph.length) { html += `<p>${inline(paragraph.join(" "))}</p>`; paragraph = []; } };
+  const flushParagraph = () => { if (paragraph.length) { const value = paragraph.join(" "); html += `<p${/^\*\*\d+\.\d+/.test(value) ? ' class="recommendation"' : ""}>${inline(value)}</p>`; paragraph = []; } };
   const closeList = () => { if (listType) { html += `</${listType}>`; listType = null; } };
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
@@ -135,7 +135,7 @@ async function loadRoute() {
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
-    doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · BẢN DỊCH KHÔNG CHÍNH THỨC</p><h1>Tra cứu khuyến cáo đái tháo đường bằng tiếng Việt</h1><p>Thư viện chuyên ngành dành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương, tối ưu cho đọc trên máy tính, điện thoại và in ấn.</p><div class="landing-grid"><div class="landing-card"><strong>${count}/17</strong>chương hiện có</div><div class="landing-card"><strong>Tìm kiếm</strong>ngay trong chương</div><div class="landing-card"><strong>Responsive</strong>đọc thuận tiện mọi thiết bị</div></div><p><a href="#/chapter/1">Bắt đầu từ Chương 1 →</a></p></section>`;
+    doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường<br><span>Phiên bản tiếng Việt chuyên ngành</span></h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p><div class="landing-grid"><div class="landing-card"><strong>${count}<small>/17 chương</small></strong><span>Nội dung đã công bố</span></div><div class="landing-card"><strong>17</strong><span>Chủ đề thực hành lâm sàng</span></div><div class="landing-card"><strong>Cá nhân</strong><span>Tô sáng lưu trên thiết bị của bạn</span></div></div><div class="landing-actions"><a class="primary-action" href="#/chapter/1">Bắt đầu đọc Chương 1 <span>→</span></a><a class="secondary-action" href="#/chapter/3">Xem dự phòng đái tháo đường</a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
     currentMarkdown = ""; renderOnPage(); setPager(0); return;
   }
   const chapter = chapters.find(c => c[0] === n);
