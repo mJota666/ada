@@ -44,8 +44,7 @@ function chapterTools() { return `<div class="chapter-tools"><label><input id="c
 function updateReadingProgress() {
   if (!currentChapter) return;
   const state = readingState(); const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const current = Math.min(100, Math.round(scrollY / maxScroll * 100));
-  if (current > (state.max || 0) && !state.complete) { state.max = current; saveReadingState(state); }
-  const value = state.complete ? 100 : Math.max(state.max || 0, current); const ring = document.getElementById("chapterRing");
+  const value = state.complete ? 100 : (state.max || 0); const ring = document.getElementById("chapterRing");
   if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đọc ${value}%`; } updateChapterBadge();
   const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete;
 }

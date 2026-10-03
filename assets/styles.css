@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
   --navy: #12304a;
-  --blue: #1769aa;
-  --cyan: #0b8793;
-  --gold: #b8860b;
+  --blue: #2f6f8f;
+  --cyan: #3d8f8a;
+  --gold: #c4873d;
   --ink: #17212b;
   --muted: #5f6b76;
   --line: #dbe3e9;
   --paper: #fff;
-  --wash: #f4f7f9;
-  --recommendation: #eef7fb;
+  --wash: #f1f7f5;
+  --recommendation: #edf8f4;
   --shadow: 0 10px 30px rgba(18, 48, 74, .09);
 }
 
@@ -70,8 +70,8 @@ a { color: var(--blue); }
 .chapter-tools { position: sticky; top: 88px; z-index: 8; display: flex; align-items: center; gap: .75rem; margin: -2rem 0 2rem; padding: .6rem .7rem .6rem .85rem; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--paper) 92%, transparent); box-shadow: 0 5px 16px rgba(18,48,74,.08); backdrop-filter: blur(10px); font-size: .8rem; }
 .chapter-tools label { display: inline-flex; align-items: center; gap: .45rem; color: var(--navy); font-weight: 700; }
 .chapter-tools input { width: 1rem; height: 1rem; accent-color: var(--cyan); }
-.chapter-tools button { margin-left: auto; border: 1px solid var(--line); border-radius: 7px; padding: .42rem .65rem; background: var(--paper); color: var(--blue); cursor: pointer; font: inherit; font-weight: 700; }
-.chapter-tools button:hover { border-color: var(--cyan); background: var(--recommendation); }
+.chapter-tools button { margin-left: auto; border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--line)); border-radius: 7px; padding: .42rem .65rem; background: color-mix(in srgb, var(--gold) 13%, var(--paper)); color: #8a5a21; cursor: pointer; font: inherit; font-weight: 700; }
+.chapter-tools button:hover { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 22%, var(--paper)); }
 .progress-ring { --progress: 0deg; display: grid; place-items: center; width: 39px; height: 39px; border-radius: 50%; background: conic-gradient(var(--cyan) var(--progress), var(--line) 0); position: relative; font-size: .62rem; font-weight: 800; color: var(--navy); }
 .progress-ring::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--paper); }
 .progress-ring span { position: relative; z-index: 1; }

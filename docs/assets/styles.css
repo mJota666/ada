@@ -1,15 +1,15 @@
 :root {
   color-scheme: light;
   --navy: #12304a;
-  --blue: #1769aa;
-  --cyan: #0b8793;
-  --gold: #b8860b;
+  --blue: #2f6f8f;
+  --cyan: #3d8f8a;
+  --gold: #c4873d;
   --ink: #17212b;
   --muted: #5f6b76;
   --line: #dbe3e9;
   --paper: #fff;
-  --wash: #f4f7f9;
-  --recommendation: #eef7fb;
+  --wash: #f1f7f5;
+  --recommendation: #edf8f4;
   --shadow: 0 10px 30px rgba(18, 48, 74, .09);
 }
 
@@ -68,7 +68,7 @@ a { color: var(--blue); }
 .document { padding-top: 3.5rem; font-family: Arial, "Segoe UI", sans-serif; font-size: 1.04rem; }
 .document > :first-child { margin-top: 0; }
 .chapter-tools { position: sticky; top: 88px; z-index: 8; display: flex; align-items: center; gap: .75rem; margin: -2rem 0 2rem; padding: .6rem .7rem .6rem .85rem; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--paper) 92%, transparent); box-shadow: 0 5px 16px rgba(18,48,74,.08); backdrop-filter: blur(10px); font-size: .8rem; }
-.chapter-tools label { display: inline-flex; align-items: center; gap: .45rem; color: var(--navy); font-weight: 700; }.chapter-tools input { width: 1rem; height: 1rem; accent-color: var(--cyan); }.chapter-tools button { margin-left: auto; border: 1px solid var(--line); border-radius: 7px; padding: .42rem .65rem; background: var(--paper); color: var(--blue); cursor: pointer; font: inherit; font-weight: 700; }.chapter-tools button:hover { border-color: var(--cyan); background: var(--recommendation); }.progress-ring { --progress: 0deg; display: grid; place-items: center; width: 39px; height: 39px; border-radius: 50%; background: conic-gradient(var(--cyan) var(--progress), var(--line) 0); position: relative; font-size: .62rem; font-weight: 800; color: var(--navy); }.progress-ring::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--paper); }.progress-ring span { position: relative; z-index: 1; }
+.chapter-tools label { display: inline-flex; align-items: center; gap: .45rem; color: var(--navy); font-weight: 700; }.chapter-tools input { width: 1rem; height: 1rem; accent-color: var(--cyan); }.chapter-tools button { margin-left: auto; border: 1px solid color-mix(in srgb, var(--gold) 55%, var(--line)); border-radius: 7px; padding: .42rem .65rem; background: color-mix(in srgb, var(--gold) 13%, var(--paper)); color: #8a5a21; cursor: pointer; font: inherit; font-weight: 700; }.chapter-tools button:hover { border-color: var(--gold); background: color-mix(in srgb, var(--gold) 22%, var(--paper)); }.progress-ring { --progress: 0deg; display: grid; place-items: center; width: 39px; height: 39px; border-radius: 50%; background: conic-gradient(var(--cyan) var(--progress), var(--line) 0); position: relative; font-size: .62rem; font-weight: 800; color: var(--navy); }.progress-ring::after { content: ""; position: absolute; inset: 4px; border-radius: 50%; background: var(--paper); }.progress-ring span { position: relative; z-index: 1; }
 .document h1, .document h2, .document h3 { font-family: Inter, "Segoe UI", Arial, sans-serif; line-height: 1.2; color: var(--navy); scroll-margin-top: 88px; }
 .document h1 { margin: 0 0 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.035em; }
 .document h2 { margin: 3.2rem 0 1rem; font-size: 1.65rem; }
