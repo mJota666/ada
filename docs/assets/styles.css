@@ -157,6 +157,7 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 @media (max-width: 700px) { .brand { flex: 1 1 auto; width: auto; } }
 
 /* The landing page is a cover, not a constrained reading column. */
+body.is-landing { height: 100vh; overflow: hidden; }
 .is-landing .app-shell { grid-template-columns: 286px minmax(0, 1fr); max-width: 1510px; height: calc(100vh - 76px); overflow: hidden; }
 .is-landing .on-page { display: none; }
 .is-landing .sidebar { height: calc(100vh - 76px); overflow-y: auto; }
@@ -165,7 +166,9 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 .is-landing .landing { max-width: 1120px; margin: 0 auto; padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 5vw, 5rem); }
 .is-landing .landing h1 { max-width: 980px; font-size: clamp(3rem, 6vw, 5.5rem); }
 .is-landing .landing-lead { max-width: 78ch; font-size: 1.2rem; }
-@media (max-width: 700px) { .is-landing .app-shell { display: block; height: auto; overflow: visible; }.is-landing .sidebar { height: auto; max-height: 35vh; }.is-landing .main { overflow: visible; }.is-landing .document { height: auto; min-height: calc(100vh - 112px); overflow: visible; } }
+.is-landing .pager { display: none; }
+@media (max-width: 700px) { body.is-landing { height: auto; overflow: auto; } .is-landing .app-shell { display: block; height: auto; overflow: visible; }.is-landing .sidebar { height: auto; max-height: 35vh; }.is-landing .main { overflow: visible; }.is-landing .document { height: auto; min-height: calc(100vh - 112px); overflow: visible; } }
+
 
 
 
