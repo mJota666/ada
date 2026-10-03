@@ -9,6 +9,7 @@
 </head>
 <body>
   <header class="topbar">
+    <button class="menu-button" type="button" aria-label="Mở mục lục">☰</button>
     <a class="brand" href="index.html#/">
       <span class="brand-mark">ADA</span>
       <span><strong>Thư viện lâm sàng đái tháo đường</strong><small>Bản dịch tiếng Việt chuyên ngành</small></span>
@@ -17,9 +18,9 @@
       <a class="top-tab" href="index.html#/">Standards of Care 2026</a>
       <a class="top-tab active" href="consensus.html">ADA–EASD 2026</a>
     </nav>
-    <a class="home-link" href="index.html#/">⌂ Trang chủ</a>
+    <button class="theme-button" type="button" aria-label="Đổi giao diện sáng tối">◐</button>
   </header>
-  <main class="standalone-document">
+  <main class="main consensus-main"><article class="document standalone-document">
     <p class="eyebrow">ADA–EASD · BÁO CÁO ĐỒNG THUẬN 2026</p>
     <h1>Quản lý đái tháo đường típ 2</h1>
     <p class="standalone-lead">Báo cáo đồng thuận của American Diabetes Association (ADA) và European Association for the Study of Diabetes (EASD), phiên bản 2026.</p>
@@ -34,6 +35,11 @@
     </section>
     <div class="standalone-actions"><a class="primary-action" href="index.html#/">Quay lại Standards of Care</a></div>
     <p class="standalone-note">Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</p>
-  </main>
+  </article></main>
+  <script>
+    const themeButton = document.querySelector('.theme-button');
+    if (localStorage.getItem('ada-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
+    themeButton?.addEventListener('click', () => { const dark = document.documentElement.dataset.theme !== 'dark'; document.documentElement.dataset.theme = dark ? 'dark' : 'light'; localStorage.setItem('ada-theme', dark ? 'dark' : 'light'); });
+  </script>
 </body>
 </html>
