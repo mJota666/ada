@@ -15,7 +15,7 @@ const chapters = [
   [14, "Trẻ em và thanh thiếu niên", true],
   [15, "Quản lý đái tháo đường trong thai kỳ", false],
   [16, "Chăm sóc đái tháo đường trong bệnh viện", false],
-  [17, "Vận động chính sách về đái tháo đường", false]
+  [17, "Vận động chính sách về đái tháo đường", true]
 ];
 
 const doc = document.getElementById("document");
