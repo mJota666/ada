@@ -133,7 +133,7 @@ async function loadRoute() {
   try {
     const response = await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0);
+    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0); const routeQuery = location.hash.match(/[?&]search=([^&]+)/); if (routeQuery) { search.value = decodeURIComponent(routeQuery[1]); setTimeout(highlightSearch, 80); }
   } catch (error) { doc.innerHTML = `<div class="error"><strong>Không tải được Chương ${n}.</strong><p>${escapeHtml(error.message)}</p></div>`; }
 }
 function highlightSearch() {
@@ -153,7 +153,7 @@ function highlightSearch() {
 async function searchAllChapters(query) {
   const results = []; const available = chapters.filter(c => c[2]);
   await Promise.all(available.map(async ([n, title]) => { try { chapterTextCache[n] ||= await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`).then(r => r.text()); } catch { return; } const lines = chapterTextCache[n].split(/\r?\n/); lines.forEach((line, i) => { if (line.toLowerCase().includes(query.toLowerCase()) && results.length < 60) results.push({n, title, line: line.replace(/[#*|`]/g, "").trim().slice(0, 180), i}); }); }));
-  results.sort((a,b) => a.n-b.n || a.i-b.i); let box = document.getElementById("globalResults"); if (!box) { box = document.createElement("div"); box.id = "globalResults"; box.className = "global-results"; searchStatus.after(box); } box.innerHTML = results.length ? results.map(r => `<a href="#/chapter/${r.n}"><strong>Chương ${r.n}</strong><span>${escapeHtml(r.line)}</span></a>`).join("") : `<p>Không tìm thấy trong các chương đã công bố.</p>`; searchStatus.textContent = `${results.length}${results.length === 60 ? "+" : ""} kết quả trên toàn bộ chương`;
+  results.sort((a,b) => a.n-b.n || a.i-b.i); let box = document.getElementById("globalResults"); if (!box) { box = document.createElement("div"); box.id = "globalResults"; box.className = "global-results"; searchStatus.after(box); } box.innerHTML = results.length ? results.map(r => `<a href="#/chapter/${r.n}?search=${encodeURIComponent(query)}"><strong>Chương ${r.n}</strong><span>${escapeHtml(r.line)}</span></a>`).join("") : `<p>Không tìm thấy trong các chương đã công bố.</p>`; searchStatus.textContent = `${results.length}${results.length === 60 ? "+" : ""} kết quả trên toàn bộ chương`;
 }
 function closeMenu(){ sidebar.classList.remove("open"); backdrop.classList.remove("open"); menu.setAttribute("aria-expanded","false"); }
 menu.addEventListener("click",()=>{ const open=sidebar.classList.toggle("open"); backdrop.classList.toggle("open",open); menu.setAttribute("aria-expanded",String(open)); });
