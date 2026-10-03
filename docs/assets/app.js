@@ -133,10 +133,10 @@ async function loadRoute() {
   try {
     const response = await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0); const routeQuery = location.hash.match(/[?&]search=([^&]+)/); if (routeQuery) { search.value = decodeURIComponent(routeQuery[1]); setTimeout(highlightSearch, 80); }
+    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0); const routeQuery = location.hash.match(/[?&]search=([^&]+)/); if (routeQuery) { search.value = decodeURIComponent(routeQuery[1]); setTimeout(() => highlightSearch(true), 80); }
   } catch (error) { doc.innerHTML = `<div class="error"><strong>Không tải được Chương ${n}.</strong><p>${escapeHtml(error.message)}</p></div>`; }
 }
-function highlightSearch() {
+function highlightSearch(shouldScroll = false) {
   const query = search.value.trim();
   doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); bindChapterTools();
   if (!query) { searchStatus.textContent = ""; renderOnPage(); return; }
@@ -148,7 +148,7 @@ function highlightSearch() {
     while ((m = re.exec(value))) { frag.append(value.slice(last,m.index)); const mark=document.createElement("mark"); mark.textContent=m[0]; frag.append(mark); last=m.index+m[0].length; count++; }
     frag.append(value.slice(last)); textNode.replaceWith(frag);
   });
-  searchStatus.textContent = `${count} kết quả`; renderOnPage(); doc.querySelector("mark")?.scrollIntoView({behavior:"smooth",block:"center"});
+  searchStatus.textContent = `${count} kết quả`; renderOnPage(); if (shouldScroll) doc.querySelector("mark")?.scrollIntoView({behavior:"smooth",block:"center"});
 }
 async function searchAllChapters(query) {
   const results = []; const available = chapters.filter(c => c[2]);
@@ -163,5 +163,6 @@ document.getElementById("themeButton").addEventListener("click",()=>{ const next
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; updateReadingProgress(); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
+
 
 
