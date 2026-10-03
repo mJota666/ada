@@ -161,7 +161,7 @@ async function loadRoute() {
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
-    const last = Number(localStorage.getItem("ada-last-chapter") || 0); const lastTitle = chapters.find(c => c[0] === last)?.[1]; doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường</h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p>${lastTitle ? `<div class="current-location"><span>Đang đọc</span><strong>Chương ${last}: ${lastTitle}</strong><a href="#/chapter/${last}?resume=1">Tiếp tục đọc →</a></div>` : ""}<div class="landing-actions"><a class="primary-action" href="#/chapter/${last || 1}?resume=1">${last ? `Tiếp tục Chương ${last}` : "Bắt đầu đọc Chương 1"} <span>→</span></a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
+    const last = Number(localStorage.getItem("ada-last-chapter") || 0); const lastTitle = chapters.find(c => c[0] === last)?.[1]; doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường</h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p>${lastTitle ? `<div class="current-location"><span>Đang đọc</span><strong>Chương ${last}: ${lastTitle}</strong></div>` : ""}<div class="landing-actions"><a class="primary-action" href="#/chapter/${last || 1}?resume=1">${last ? `Tiếp tục đọc Chương ${last}` : "Bắt đầu đọc Chương 1"} <span>→</span></a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
     currentMarkdown = ""; renderOnPage(); setPager(0); return;
   }
   const chapter = chapters.find(c => c[0] === n);
@@ -207,6 +207,7 @@ document.getElementById("themeButton").addEventListener("click",()=>{ const next
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; clearTimeout(readingSaveTimer); readingSaveTimer = setTimeout(() => { if (!currentChapter) return; const state = readingState(); if (state.complete) return; state.max = Math.max(state.max || 0, currentScrollPercent()); saveReadingState(state); updateReadingProgress(); }, 180); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
+
 
 
 
