@@ -150,7 +150,7 @@ html[data-theme="dark"] body { background: #0d151d; }
 html[data-theme="dark"] .document mark { background: #d8b84f; color: #15212b; }
 html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
 .landing, .landing h1, .document { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; }
-.landing h1, .document h1, .document h2 { font-family: Georgia, "Times New Roman", "Segoe UI", serif; }
+.landing h1, .document h1, .document h2 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: -.025em; }
 .document p { text-align: justify; text-justify: inter-word; }
 
 @media (max-width: 1180px) {
