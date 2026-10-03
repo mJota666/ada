@@ -13,7 +13,7 @@ const chapters = [
   [12, "Bệnh võng mạc, bệnh thần kinh và chăm sóc bàn chân", true],
   [13, "Người cao tuổi", true],
   [14, "Trẻ em và thanh thiếu niên", true],
-  [15, "Quản lý đái tháo đường trong thai kỳ", false],
+  [15, "Quản lý đái tháo đường trong thai kỳ", true],
   [16, "Chăm sóc đái tháo đường trong bệnh viện", false],
   [17, "Vận động chính sách về đái tháo đường", true]
 ];
@@ -128,3 +128,4 @@ document.getElementById("themeButton").addEventListener("click",()=>{ const next
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; },{passive:true});
 window.addEventListener("hashchange",loadRoute); loadRoute();
+
