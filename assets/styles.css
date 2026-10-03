@@ -166,6 +166,7 @@ html[data-theme="dark"] body { background: #0d151d; }
 html[data-theme="dark"] .document mark { background: #d8b84f; color: #15212b; }
 html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
 html[data-theme="dark"] .chapter-tools { background: rgba(20,35,45,.72); border-color: rgba(160,220,215,.28); box-shadow: 0 12px 28px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.12); }
+.landing h1, .document h1, .document h2 { font-family: Cambria, "Times New Roman", serif; font-kerning: normal; font-variant-ligatures: none; letter-spacing: normal; word-spacing: normal; }
 .landing, .landing h1, .document { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; }
 .landing h1 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: normal; font-weight: 750; }
 .document h1, .document h2 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: normal; font-weight: 750; }

@@ -104,7 +104,8 @@ a { color: var(--blue); }
 /* Clinical knowledge-base visual system */
 .document p { text-align: justify; text-justify: inter-word; }
 html[data-theme="dark"] .document mark { background: #d8b84f; color: #15212b; }
-html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
+ html[data-theme="dark"] .document mark.user-highlight { background: #d8b84f; color: #15212b; }
+.landing h1, .document h1, .document h2 { font-family: Cambria, "Times New Roman", serif; font-kerning: normal; font-variant-ligatures: none; letter-spacing: normal; word-spacing: normal; }
 .landing, .landing h1, .document { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; }
 .landing h1 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: normal; font-weight: 750; }
 .document h1, .document h2 { font-family: "Segoe UI", "Arial Unicode MS", Arial, sans-serif; font-kerning: normal; letter-spacing: normal; font-weight: 750; }
