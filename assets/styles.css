@@ -120,7 +120,9 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 .search-box { padding: .85rem; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; box-shadow: 0 5px 16px rgba(18,48,74,.05); }
 .search-box input { border-radius: 7px; background: var(--wash); }
 .chapter-list { border-left: 1px solid var(--line); }
-.chapter-list a { grid-template-columns: 2.15rem 1fr; margin: .1rem 0; padding: .62rem .65rem; border-radius: 0 8px 8px 0; }
+.chapter-list a { grid-template-columns: 2.15rem minmax(0, 1fr) auto; margin: .1rem 0; padding: .62rem .65rem; border-radius: 0 8px 8px 0; }
+.chapter-progress { align-self: center; color: var(--muted); font-size: .68rem; font-variant-numeric: tabular-nums; }
+.chapter-list a.active .chapter-progress { color: var(--cyan); font-weight: 800; }
 .chapter-list a.active { box-shadow: inset 3px 0 0 var(--cyan); background: linear-gradient(90deg, var(--recommendation), transparent); }
 .sidebar-note { border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--line)); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; background: color-mix(in srgb, #fff9e8 60%, var(--paper)); }
 .main { padding: 0 1rem 5rem; }

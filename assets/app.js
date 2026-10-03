@@ -46,7 +46,7 @@ function updateReadingProgress() {
   const state = readingState(); const maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); const current = Math.min(100, Math.round(scrollY / maxScroll * 100));
   if (current > (state.max || 0) && !state.complete) { state.max = current; saveReadingState(state); }
   const value = state.complete ? 100 : Math.max(state.max || 0, current); const ring = document.getElementById("chapterRing");
-  if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đọc ${value}%`; }
+  if (ring) { ring.style.setProperty("--progress", `${value * 3.6}deg`); ring.querySelector("span").textContent = state.complete ? "✓" : `${value}%`; ring.title = state.complete ? "Đã hoàn thành" : `Đã đọc ${value}%`; } updateChapterBadge();
   const checkbox = document.getElementById("completeChapter"); if (checkbox) checkbox.checked = !!state.complete;
 }
 function bindChapterTools() {
@@ -133,9 +133,11 @@ function renderMarkdown(markdown) {
   }
   flushParagraph(); closeList(); return html;
 }
+function chapterPercent(n) { try { const state = JSON.parse(localStorage.getItem(`ada-reading-chapter-${n}`) || '{"max":0,"complete":false}'); return state.complete ? 100 : Math.max(0, Math.min(100, state.max || 0)); } catch { return 0; } }
+function updateChapterBadge() { const badge = document.getElementById(`chapterProgress-${currentChapter}`); if (badge) badge.textContent = `${chapterPercent(currentChapter)}%`; }
 function renderNavigation(active) {
   list.innerHTML = chapters.map(([n,title,available]) => available
-    ? `<li><a href="#/chapter/${n}" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span></a></li>`
+    ? `<li><a href="#/chapter/${n}" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span><span class="chapter-progress" id="chapterProgress-${n}">${chapterPercent(n)}%</span></a></li>`
     : `<li><span class="unavailable" title="Chưa có bản dịch"><span class="number">${String(n).padStart(2,"0")}</span> ${title}</span></li>`).join("");
 }
 function renderOnPage() {
