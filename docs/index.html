@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bản dịch tiếng Việt chuyên ngành của Standards of Care in Diabetes 2026.">
+  <title>ADA 2026 | Bản dịch tiếng Việt chuyên ngành</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#document">Đi đến nội dung</a>
+  <header class="topbar">
+    <button class="menu-button" id="menuButton" aria-label="Mở mục lục" aria-expanded="false">☰</button>
+    <a class="brand" href="#/">
+      <span class="brand-mark">ADA</span>
+      <span><strong>Tiêu chuẩn chăm sóc đái tháo đường 2026</strong><small>Bản dịch tiếng Việt chuyên ngành</small></span>
+    </a>
+    <button class="theme-button" id="themeButton" aria-label="Đổi giao diện sáng tối">◐</button>
+  </header>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="search-box">
+        <label for="searchInput">Tìm trong chương đang đọc</label>
+        <input id="searchInput" type="search" placeholder="Nhập thuật ngữ, khuyến cáo…" autocomplete="off">
+        <p id="searchStatus" class="search-status" aria-live="polite"></p>
+      </div>
+      <nav aria-label="Mục lục các chương">
+        <h2>Nội dung</h2>
+        <ol id="chapterList" class="chapter-list"></ol>
+      </nav>
+      <div class="sidebar-note">
+        <strong>Lưu ý chuyên môn</strong>
+        <p>Bản dịch không chính thức, phục vụ học tập. Quyết định điều trị cần dựa trên bản gốc và bối cảnh lâm sàng.</p>
+      </div>
+    </aside>
+
+    <main class="main" id="main">
+      <div class="reading-progress" id="readingProgress"></div>
+      <article id="document" class="document" tabindex="-1">
+        <div class="loading">Đang tải nội dung…</div>
+      </article>
+      <nav class="pager" aria-label="Điều hướng chương">
+        <a id="previousChapter" class="pager-link" href="#"></a>
+        <a id="nextChapter" class="pager-link next" href="#"></a>
+      </nav>
+    </main>
+
+    <aside class="on-page" aria-label="Mục lục trong chương">
+      <h2>Trong chương này</h2>
+      <nav id="onPageNav"></nav>
+    </aside>
+  </div>
+  <div class="backdrop" id="backdrop"></div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
