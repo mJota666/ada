@@ -105,7 +105,7 @@ function chapterPercent(n) { try { const state = JSON.parse(localStorage.getItem
 function updateChapterBadge() { const badge = document.getElementById(`chapterProgress-${currentChapter}`); if (badge) { const value = chapterPercent(currentChapter); badge.style.setProperty("--chapter-progress", `${value * 3.6}deg`); badge.querySelector("span").textContent = value; } }
 function renderNavigation(active) {
   list.innerHTML = chapters.map(([n,title,available]) => available
-    ? `<li><a href="#/chapter/${n}" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span><span class="chapter-progress" id="chapterProgress-${n}" style="--chapter-progress:${chapterPercent(n)*3.6}deg"><span>${chapterPercent(n)}</span></span></a></li>`
+    ? `<li><a href="#/chapter/${n}?resume=1" class="${n===active?'active':''}"><span class="number">${String(n).padStart(2,"0")}</span><span>${title}</span><span class="chapter-progress" id="chapterProgress-${n}" style="--chapter-progress:${chapterPercent(n)*3.6}deg"><span>${chapterPercent(n)}</span></span></a></li>`
     : `<li><span class="unavailable" title="Chưa có bản dịch"><span class="number">${String(n).padStart(2,"0")}</span> ${title}</span></li>`).join("");
 }
 function renderOnPage() {
@@ -125,7 +125,7 @@ async function loadRoute() {
   renderNavigation(n); search.value = ""; searchStatus.textContent = ""; document.getElementById("globalResults")?.remove(); closeMenu();
   if (!n) {
     const count = chapters.filter(c => c[2]).length;
-    const last = Number(localStorage.getItem("ada-last-chapter") || 0); const lastTitle = chapters.find(c => c[0] === last)?.[1]; doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường<br><span>Phiên bản tiếng Việt chuyên ngành</span></h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p>${lastTitle ? `<div class="current-location"><span>Đang đọc</span><strong>Chương ${last}: ${lastTitle}</strong><a href="#/chapter/${last}">Tiếp tục đọc →</a></div>` : ""}<div class="landing-actions"><a class="primary-action" href="#/chapter/${last || 1}">${last ? `Tiếp tục Chương ${last}` : "Bắt đầu đọc Chương 1"} <span>→</span></a><a class="secondary-action" href="#/chapter/3">Xem dự phòng đái tháo đường</a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
+    const last = Number(localStorage.getItem("ada-last-chapter") || 0); const lastTitle = chapters.find(c => c[0] === last)?.[1]; doc.innerHTML = `<section class="landing"><p class="eyebrow">ADA 2026 · THƯ VIỆN LÂM SÀNG</p><h1>Tiêu chuẩn chăm sóc đái tháo đường<br><span>Phiên bản tiếng Việt chuyên ngành</span></h1><p class="landing-lead">Nền tảng tra cứu thực hành cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế. Nội dung được tổ chức theo chương để hỗ trợ đọc nhanh, học tập và thảo luận lâm sàng.</p>${lastTitle ? `<div class="current-location"><span>Đang đọc</span><strong>Chương ${last}: ${lastTitle}</strong><a href="#/chapter/${last}?resume=1">Tiếp tục đọc →</a></div>` : ""}<div class="landing-actions"><a class="primary-action" href="#/chapter/${last || 1}?resume=1">${last ? `Tiếp tục Chương ${last}` : "Bắt đầu đọc Chương 1"} <span>→</span></a><a class="secondary-action" href="#/chapter/3">Xem dự phòng đái tháo đường</a></div><div class="landing-disclaimer"><strong>Lưu ý sử dụng</strong><span>Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</span></div></section>`;
     currentMarkdown = ""; renderOnPage(); setPager(0); return;
   }
   const chapter = chapters.find(c => c[0] === n);
@@ -134,7 +134,7 @@ async function loadRoute() {
   try {
     const response = await fetch(`chapters/chapter-${String(n).padStart(2,"0")}.md`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0); const routeQuery = location.hash.match(/[?&]search=([^&]+)/); if (routeQuery) { search.value = decodeURIComponent(routeQuery[1]); setTimeout(() => highlightSearch(true), 80); }
+    currentMarkdown = await response.text(); doc.innerHTML = chapterTools() + renderMarkdown(currentMarkdown); restoreHighlights(); bindChapterTools(); renderOnPage(); setPager(n); document.title = `Chương ${n} | ADA 2026 tiếng Việt`; window.scrollTo(0,0); const routeQuery = location.hash.match(/[?&]search=([^&]+)/); if (routeQuery) { search.value = decodeURIComponent(routeQuery[1]); setTimeout(() => highlightSearch(true), 80); } else if (location.hash.includes("resume=1")) { const state = readingState(); if (state.max) setTimeout(() => { const max = Math.max(1, document.documentElement.scrollHeight - innerHeight); window.scrollTo({top: max * state.max / 100, behavior: "smooth"}); }, 120); }
   } catch (error) { doc.innerHTML = `<div class="error"><strong>Không tải được Chương ${n}.</strong><p>${escapeHtml(error.message)}</p></div>`; }
 }
 function highlightSearch(shouldScroll = false) {
@@ -164,6 +164,7 @@ document.getElementById("themeButton").addEventListener("click",()=>{ const next
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
 window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; updateReadingProgress(); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
+
 
 
 
