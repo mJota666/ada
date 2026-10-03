@@ -205,7 +205,7 @@ backdrop.addEventListener("click",closeMenu);
 search.addEventListener("input",()=>{ clearTimeout(search.timer); search.timer=setTimeout(()=>{ const q=search.value.trim(); if (q) { highlightSearch(); searchAllChapters(q); } else { const box=document.getElementById("globalResults"); if (box) box.remove(); highlightSearch(); } },250); });
 document.getElementById("themeButton").addEventListener("click",()=>{ const next=document.documentElement.dataset.theme==="dark"?"light":"dark"; document.documentElement.dataset.theme=next; localStorage.setItem("theme",next); });
 document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; clearTimeout(readingSaveTimer); readingSaveTimer = setTimeout(() => { if (!currentChapter) return; const state = readingState(); if (state.complete) return; state.max = currentScrollPercent(); saveReadingState(state); updateReadingProgress(); }, 180); },{passive:true});
+window.addEventListener("scroll",()=>{ const max=document.documentElement.scrollHeight-innerHeight; document.getElementById("readingProgress").style.width=`${max>0?scrollY/max*100:0}%`; clearTimeout(readingSaveTimer); readingSaveTimer = setTimeout(() => { if (!currentChapter) return; const state = readingState(); if (state.complete) return; state.max = Math.max(state.max || 0, currentScrollPercent()); saveReadingState(state); updateReadingProgress(); }, 180); },{passive:true});
 window.addEventListener("hashchange",()=>{ if (!location.hash || location.hash === "#/" || location.hash.startsWith("#/chapter/")) loadRoute(); }); loadRoute();
 
 
