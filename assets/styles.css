@@ -139,7 +139,7 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
 .main:has(.document .loading) .pager { display: none; }
 @keyframes loading-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .document .loading::before { animation-duration: 1.8s; } }
-.top-tabs { display: flex; align-items: center; gap: .35rem; margin-left: auto; margin-right: 1rem; }
+.top-tabs { display: flex; align-items: center; gap: .35rem; margin: 0; padding-left: .7rem; border-left: 1px solid var(--line); }
 .top-tab { color: var(--muted); text-decoration: none; font-size: .78rem; font-weight: 700; padding: .55rem .75rem; border-radius: 8px; white-space: nowrap; }
 .top-tab:hover { color: var(--blue); background: var(--wash); }.top-tab.active { color: var(--blue); background: color-mix(in srgb, var(--cyan) 12%, var(--paper)); }
 .consensus-main { max-width: 1120px; margin: 0 auto; }.standalone-document { max-width: 920px; margin: 2rem auto 4rem; padding: clamp(2rem, 6vw, 5rem); background: var(--paper); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
