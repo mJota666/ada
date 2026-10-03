@@ -152,6 +152,10 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
   word-spacing: normal;
 }
 
+/* Reserve the same brand column on every document tab to prevent horizontal jumps. */
+.brand { flex: 0 0 360px; width: 360px; }
+@media (max-width: 700px) { .brand { flex: 1 1 auto; width: auto; } }
+
 
 
 
