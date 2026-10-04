@@ -32,6 +32,7 @@
       <div class="status-icon">↻</div>
       <div><strong>Bản dịch đang được triển khai</strong><p>Tài liệu sẽ được biên tập theo từng phần, với thuật ngữ thống nhất cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế.</p></div>
     </section>
+    <div class="consensus-tools"><button id="consensusFocus" class="focus-toggle consensus-focus-toggle" type="button" aria-pressed="false">Chế độ tập trung</button></div>
     <section class="translation-content" lang="vi">
       <p class="content-kicker">PHẦN MỞ ĐẦU · TÓM TẮT</p>
       <h2>Tóm tắt</h2>
@@ -268,14 +269,14 @@
     const content = document.querySelector('.translation-content');
     const toc = document.getElementById('consensusToc');
     const headings = [...content.querySelectorAll('h2')];
-    const readingKey = 'ada-consensus-reading-';
+    const focusButton = document.getElementById('consensusFocus');
 
     headings.forEach((heading, index) => {
       heading.id ||= `consensus-section-${index + 1}`;
       const link = document.createElement('a');
       link.href = `#${heading.id}`;
       link.className = 'consensus-toc-item';
-      link.innerHTML = `<span class="consensus-toc-index">${String(index + 1).padStart(2, '0')}</span><span class="consensus-toc-title"></span><span class="consensus-progress" aria-label="Tiến độ đọc"><span>0</span></span>`;
+      link.innerHTML = `<span class="consensus-toc-index">${String(index + 1).padStart(2, '0')}</span><span class="consensus-toc-title"></span>`;
       link.querySelector('.consensus-toc-title').textContent = heading.textContent.trim();
       link.addEventListener('click', event => {
         event.preventDefault();
@@ -292,15 +293,8 @@
       headings.forEach((heading, index) => {
         const start = heading.getBoundingClientRect().top + window.scrollY;
         const next = headings[index + 1]?.getBoundingClientRect().top + window.scrollY || document.documentElement.scrollHeight;
-        const current = Math.round(Math.max(0, Math.min(100, (marker - start) / Math.max(1, next - start) * 100)));
-        const key = `${readingKey}${heading.id}`;
-        const saved = Number(localStorage.getItem(key) || 0);
-        const progress = Math.max(saved, current);
-        if (progress !== saved) localStorage.setItem(key, progress);
         const item = tocItems[index];
         item.classList.toggle('active', marker >= start && marker < next);
-        item.querySelector('.consensus-progress').style.setProperty('--progress', progress);
-        item.querySelector('.consensus-progress span').textContent = progress;
         if (marker >= start) active = index;
       });
       tocItems.forEach((item, index) => item.classList.toggle('active', index === active));
@@ -308,6 +302,11 @@
     window.addEventListener('scroll', updateReadingProgress, { passive: true });
     window.addEventListener('resize', updateReadingProgress);
     updateReadingProgress();
+    focusButton.addEventListener('click', () => {
+      const focused = document.body.classList.toggle('consensus-focus');
+      focusButton.textContent = focused ? 'Thoát tập trung' : 'Chế độ tập trung';
+      focusButton.setAttribute('aria-pressed', String(focused));
+    });
   </script>
 </body>
 </html>
