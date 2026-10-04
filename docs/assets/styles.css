@@ -137,7 +137,7 @@ body { background: #f7f9fb; font-family: "Segoe UI", Arial, sans-serif; }
   .landing-grid { grid-template-columns: 1fr; }
 }
 @media print {
-  .skip-link, .topbar, .sidebar, .on-page, .pager, .reading-progress, .consensus-tools, .standalone-actions, button { display: none !important; }
+  .skip-link, .topbar, .sidebar, .on-page, .pager, .reading-progress, .chapter-tools, .consensus-tools, .standalone-actions, button { display: none !important; }
   .app-shell { display: block; }
   .main { padding: 0; }
   .document { font-size: 10.5pt; }
