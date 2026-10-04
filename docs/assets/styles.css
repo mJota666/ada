@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap");
+
 :root {
   color-scheme: light;
   --navy: #12304a;
@@ -166,7 +168,7 @@ body.is-landing { height: 100vh; overflow: hidden; }
 .is-landing .landing { max-width: 1120px; margin: 0 auto; padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 5vw, 5rem); }
 .is-landing .landing h1 { max-width: 980px; font-size: clamp(3rem, 6vw, 5.5rem); }
 .is-landing .landing-lead { max-width: 78ch; font-size: 1.2rem; }
-.translation-content { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); color: var(--ink); line-height: 1.8; }.translation-content h2 { margin: 1.5rem 0 .9rem; color: var(--navy); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 2.5vw, 2.15rem); }.translation-content p { max-width: 78ch; margin: .9rem 0; }.content-kicker { color: var(--cyan); font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+.translation-content { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); color: var(--ink); line-height: 1.8; }.translation-content h2 { margin: 1.5rem 0 .9rem; color: var(--navy); font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 2.5vw, 2.15rem); font-kerning: normal; font-variant-ligatures: common-ligatures; letter-spacing: 0; word-spacing: 0; }.translation-content p { max-width: 78ch; margin: .9rem 0; }.content-kicker { color: var(--cyan); font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
 .translation-table-wrap { overflow-x: auto; margin: 1.2rem 0; }.translation-table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: .9rem; line-height: 1.5; }.translation-table th, .translation-table td { padding: .75rem; border: 1px solid var(--line); vertical-align: top; text-align: left; }.translation-table th { color: var(--paper); background: var(--navy); }.translation-table tr:nth-child(even) td { background: var(--wash); }
 body.focus-mode { overflow-x: hidden; }
 body.focus-mode .topbar, body.focus-mode .sidebar, body.focus-mode .on-page, body.focus-mode .pager, body.focus-mode .reading-progress { display: none !important; }
