@@ -205,7 +205,7 @@ html[data-theme="dark"] .chapter-tools { background: rgba(20,35,45,.72); border-
   .landing-grid { grid-template-columns: 1fr; }
 }
 @media print {
-  .skip-link, .topbar, .sidebar, .on-page, .pager, .reading-progress { display: none !important; }
+  .skip-link, .topbar, .sidebar, .on-page, .pager, .reading-progress, .consensus-tools, .standalone-actions, button { display: none !important; }
   .app-shell { display: block; }
   .main { padding: 0; }
   .document { font-size: 10.5pt; }
