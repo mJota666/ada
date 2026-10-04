@@ -287,4 +287,19 @@ body.focus-mode .chapter-tools { top: 20px; transition: top .35s ease, box-shado
 .is-landing .pager { display: none; }
 @media (max-width: 700px) { body.is-landing { height: auto; overflow: auto; } .is-landing .app-shell { display: block; height: auto; overflow: visible; }.is-landing .sidebar { height: auto; max-height: 35vh; }.is-landing .main { overflow: visible; }.is-landing .document { height: auto; min-height: calc(100vh - 112px); overflow: visible; } }
 
+/* Unified liquid-glass controls for both document tabs. */
+.chapter-tools { gap: .48rem; padding: .48rem .58rem; border-color: color-mix(in srgb, #fff 74%, var(--blue)); border-radius: 18px; background: color-mix(in srgb, var(--paper) 72%, transparent); box-shadow: 0 16px 34px rgba(18,48,74,.12), inset 0 1px 0 rgba(255,255,255,.92); }
+.chapter-tools::before { background: linear-gradient(120deg, rgba(255,255,255,.62), rgba(255,255,255,.08) 42%, rgba(74,151,189,.11)); }
+.chapter-tools label { min-height: 2.35rem; padding: 0 .35rem; border-radius: 10px; font-size: .8rem; }
+.chapter-tools input { width: 1.05rem; height: 1.05rem; }
+.chapter-tools button { min-height: 2.35rem; margin-left: 0; padding: 0 .78rem; border-color: color-mix(in srgb, var(--blue) 28%, var(--line)); border-radius: 10px; background: color-mix(in srgb, var(--paper) 68%, var(--blue)); color: var(--navy); box-shadow: inset 0 1px 0 rgba(255,255,255,.78); }
+.chapter-tools button:hover { border-color: color-mix(in srgb, var(--blue) 58%, var(--line)); background: color-mix(in srgb, var(--blue) 13%, var(--paper)); color: var(--navy); }
+.chapter-tools #markReadHere { margin-left: auto; }
+.chapter-tools .focus-toggle { border-color: color-mix(in srgb, var(--blue) 55%, var(--line)); background: color-mix(in srgb, var(--blue) 16%, var(--paper)); color: var(--blue); }
+.chapter-tools .home-icon { width: 2.35rem; height: 2.35rem; border-radius: 10px; border-color: color-mix(in srgb, var(--blue) 32%, var(--line)); background: color-mix(in srgb, var(--paper) 64%, var(--blue)); }
+.progress-ring { width: 2.35rem; height: 2.35rem; font-size: .61rem; box-shadow: inset 0 1px 2px rgba(18,48,74,.08); }
+.consensus-tools { width: max-content; margin-left: auto; gap: .36rem; padding: .34rem; border: 1px solid color-mix(in srgb, #fff 74%, var(--blue)); border-radius: 16px; background: color-mix(in srgb, var(--paper) 72%, transparent); box-shadow: 0 14px 30px rgba(18,48,74,.1), inset 0 1px 0 rgba(255,255,255,.92); }
+.consensus-focus-toggle, .consensus-print { min-height: 2.35rem; margin: 0; padding: 0 .82rem; border-radius: 10px; border-color: color-mix(in srgb, var(--blue) 32%, var(--line)); background: color-mix(in srgb, var(--paper) 64%, var(--blue)); color: var(--navy); box-shadow: inset 0 1px 0 rgba(255,255,255,.8); }
+.consensus-focus-toggle { color: var(--blue); border-color: color-mix(in srgb, var(--blue) 55%, var(--line)); background: color-mix(in srgb, var(--blue) 14%, var(--paper)); }
+
 
