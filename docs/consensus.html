@@ -19,7 +19,12 @@
     </nav>
     <button class="theme-button" type="button" aria-label="Đổi giao diện sáng tối">◐</button>
   </header>
-  <main class="main consensus-main"><article class="document standalone-document">
+  <main class="main consensus-main">
+    <aside class="consensus-toc" aria-label="Mục lục báo cáo">
+      <p class="consensus-toc-label">NỘI DUNG BÁO CÁO</p>
+      <nav id="consensusToc"></nav>
+    </aside>
+    <article class="document standalone-document">
     <p class="eyebrow">ADA–EASD · BÁO CÁO ĐỒNG THUẬN 2026</p>
     <h1>Quản lý đái tháo đường típ 2</h1>
     <p class="standalone-lead">Báo cáo đồng thuận của American Diabetes Association (ADA) và European Association for the Study of Diabetes (EASD), phiên bản 2026.</p>
@@ -253,11 +258,56 @@
     </section>
     <div class="standalone-actions"><a class="primary-action" href="index.html#/">Quay lại Standards of Care</a></div>
     <p class="standalone-note">Bản dịch không chính thức, phục vụ học tập và tham khảo chuyên môn; không thay thế tài liệu gốc hoặc quyết định lâm sàng.</p>
-  </article></main>
+    </article>
+  </main>
   <script>
     const themeButton = document.querySelector('.theme-button');
     if (localStorage.getItem('ada-theme') === 'dark') document.documentElement.dataset.theme = 'dark';
     themeButton?.addEventListener('click', () => { const dark = document.documentElement.dataset.theme !== 'dark'; document.documentElement.dataset.theme = dark ? 'dark' : 'light'; localStorage.setItem('ada-theme', dark ? 'dark' : 'light'); });
+
+    const content = document.querySelector('.translation-content');
+    const toc = document.getElementById('consensusToc');
+    const headings = [...content.querySelectorAll('h2')];
+    const readingKey = 'ada-consensus-reading-';
+
+    headings.forEach((heading, index) => {
+      heading.id ||= `consensus-section-${index + 1}`;
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.className = 'consensus-toc-item';
+      link.innerHTML = `<span class="consensus-toc-index">${String(index + 1).padStart(2, '0')}</span><span class="consensus-toc-title"></span><span class="consensus-progress" aria-label="Tiến độ đọc"><span>0</span></span>`;
+      link.querySelector('.consensus-toc-title').textContent = heading.textContent.trim();
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', `#${heading.id}`);
+      });
+      toc.append(link);
+    });
+
+    const tocItems = [...toc.querySelectorAll('.consensus-toc-item')];
+    function updateReadingProgress() {
+      const marker = window.scrollY + window.innerHeight * .34;
+      let active = 0;
+      headings.forEach((heading, index) => {
+        const start = heading.getBoundingClientRect().top + window.scrollY;
+        const next = headings[index + 1]?.getBoundingClientRect().top + window.scrollY || document.documentElement.scrollHeight;
+        const current = Math.round(Math.max(0, Math.min(100, (marker - start) / Math.max(1, next - start) * 100)));
+        const key = `${readingKey}${heading.id}`;
+        const saved = Number(localStorage.getItem(key) || 0);
+        const progress = Math.max(saved, current);
+        if (progress !== saved) localStorage.setItem(key, progress);
+        const item = tocItems[index];
+        item.classList.toggle('active', marker >= start && marker < next);
+        item.querySelector('.consensus-progress').style.setProperty('--progress', progress);
+        item.querySelector('.consensus-progress span').textContent = progress;
+        if (marker >= start) active = index;
+      });
+      tocItems.forEach((item, index) => item.classList.toggle('active', index === active));
+    }
+    window.addEventListener('scroll', updateReadingProgress, { passive: true });
+    window.addEventListener('resize', updateReadingProgress);
+    updateReadingProgress();
   </script>
 </body>
 </html>
