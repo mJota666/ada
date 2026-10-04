@@ -166,6 +166,7 @@ body.is-landing { height: 100vh; overflow: hidden; }
 .is-landing .landing { max-width: 1120px; margin: 0 auto; padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 5vw, 5rem); }
 .is-landing .landing h1 { max-width: 980px; font-size: clamp(3rem, 6vw, 5.5rem); }
 .is-landing .landing-lead { max-width: 78ch; font-size: 1.2rem; }
+.translation-content { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); color: var(--ink); line-height: 1.8; }.translation-content h2 { margin: 1.5rem 0 .9rem; color: var(--navy); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 2.5vw, 2.15rem); }.translation-content p { max-width: 78ch; margin: .9rem 0; }.content-kicker { color: var(--cyan); font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
 body.focus-mode { overflow-x: hidden; }
 body.focus-mode .topbar, body.focus-mode .sidebar, body.focus-mode .on-page, body.focus-mode .pager, body.focus-mode .reading-progress { display: none !important; }
 body.focus-mode .app-shell { display: block; max-width: none; }
