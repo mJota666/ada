@@ -32,7 +32,7 @@
       <div class="status-icon">↻</div>
       <div><strong>Bản dịch đang được triển khai</strong><p>Tài liệu sẽ được biên tập theo từng phần, với thuật ngữ thống nhất cho bác sĩ nội trú, bác sĩ chuyên khoa và nhân viên y tế.</p></div>
     </section>
-    <div class="consensus-tools"><button id="consensusFocus" class="focus-toggle consensus-focus-toggle" type="button" aria-pressed="false">Chế độ tập trung</button></div>
+    <div class="consensus-tools"><button id="consensusPrint" class="consensus-print" type="button">In</button><button id="consensusFocus" class="focus-toggle consensus-focus-toggle" type="button" aria-pressed="false">Chế độ tập trung</button></div>
     <section class="translation-content" lang="vi">
       <p class="content-kicker">PHẦN MỞ ĐẦU · TÓM TẮT</p>
       <h2>Tóm tắt</h2>
@@ -270,6 +270,7 @@
     const toc = document.getElementById('consensusToc');
     const headings = [...content.querySelectorAll('h2')];
     const focusButton = document.getElementById('consensusFocus');
+    const printButton = document.getElementById('consensusPrint');
 
     headings.forEach((heading, index) => {
       heading.id ||= `consensus-section-${index + 1}`;
@@ -307,6 +308,7 @@
       focusButton.textContent = focused ? 'Thoát tập trung' : 'Chế độ tập trung';
       focusButton.setAttribute('aria-pressed', String(focused));
     });
+    printButton.addEventListener('click', () => window.print());
   </script>
 </body>
 </html>
